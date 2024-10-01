@@ -1,6 +1,7 @@
 import sys
 import subprocess
 from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QLabel
+from PySide6.QtWidgets import QMessageBox
 
 
 class CustomExplorer(QWidget):
