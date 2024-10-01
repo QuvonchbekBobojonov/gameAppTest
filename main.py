@@ -1,24 +1,21 @@
 import sys
 import subprocess
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QLabel
-from PySide6.QtWidgets import QMessageBox
+from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QLabel, QMessageBox
+from PySide6.QtGui import QGuiApplication
 
 
 class CustomExplorer(QWidget):
     def __init__(self):
         super().__init__()
         self.initUI()
-        # remove window title bar
-        self.setWindowFlag(Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint)
-        # geometry of the window in display screen size
-        x = QApplication.desktop().screen().rect().center().x() - self.width() / 2
-        y = QApplication.desktop().screen().rect().center().y() - self.height() / 2
-        self.setGeometry(x, y, self.width(), self.height())
+
+        # Remove window title bar (but not staying on top of all windows)
+        self.setWindowFlag(Qt.FramelessWindowHint)
+        self.showFullScreen()  # Make window full screen
 
     def initUI(self):
         self.setWindowTitle('Custom Explorer')
-        self.setGeometry(100, 100, 800, 600)
 
         layout = QVBoxLayout()
 
@@ -26,7 +23,7 @@ class CustomExplorer(QWidget):
         open_file_explorer_button = QPushButton('Open File Explorer', self)
         open_file_explorer_button.clicked.connect(self.open_file_explorer)
 
-        open_file_note_button = QPushButton('Open File Note', self)
+        open_file_note_button = QPushButton('Open Notepad', self)
         open_file_note_button.clicked.connect(self.open_file_note)
 
         shutdown_button = QPushButton('Shutdown System', self)
@@ -37,6 +34,7 @@ class CustomExplorer(QWidget):
 
         layout.addWidget(QLabel("Welcome to Custom Explorer", self))
         layout.addWidget(open_file_explorer_button)
+        layout.addWidget(open_file_note_button)
         layout.addWidget(shutdown_button)
         layout.addWidget(restart_button)
 
@@ -47,18 +45,25 @@ class CustomExplorer(QWidget):
         subprocess.Popen('explorer')
 
     def open_file_note(self):
-        # Open the default Windows file explorer
+        # Open Notepad
         subprocess.Popen('notepad')
 
     def shutdown_system(self):
-        # Shutdown the system
-        subprocess.Popen('shutdown /s /t 0')
+        # Confirm before shutdown
+        reply = QMessageBox.question(self, 'Confirm Shutdown', 'Are you sure you want to shut down the system?',
+                                     QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+        if reply == QMessageBox.Yes:
+            subprocess.Popen('shutdown /s /t 0')
 
     def restart_system(self):
-        # Restart the system
-        subprocess.Popen('shutdown /r /t 0')
+        # Confirm before restart
+        reply = QMessageBox.question(self, 'Confirm Restart', 'Are you sure you want to restart the system?',
+                                     QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+        if reply == QMessageBox.Yes:
+            subprocess.Popen('shutdown /r /t 0')
 
     def closeEvent(self, event):
+        # Prevent closing the window (even with Alt+F4)
         event.ignore()
 
 
