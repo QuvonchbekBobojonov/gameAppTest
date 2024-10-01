@@ -21,6 +21,9 @@ class CustomExplorer(QWidget):
         open_file_explorer_button = QPushButton('Open File Explorer', self)
         open_file_explorer_button.clicked.connect(self.open_file_explorer)
 
+        open_file_note_button = QPushButton('Open File Note', self)
+        open_file_note_button.clicked.connect(self.open_file_note)
+
         shutdown_button = QPushButton('Shutdown System', self)
         shutdown_button.clicked.connect(self.shutdown_system)
 
@@ -37,6 +40,10 @@ class CustomExplorer(QWidget):
     def open_file_explorer(self):
         # Open the default Windows file explorer
         subprocess.Popen('explorer')
+
+    def open_file_note(self):
+        # Open the default Windows file explorer
+        subprocess.Popen('notepad')
 
     def shutdown_system(self):
         # Shutdown the system
