@@ -79,7 +79,7 @@ class CustomExplorer(QWidget):
 
 if __name__ == '__main__':
     def kill_explorer():
-        os.system('taskkill /f /im explorer.exe')
+        subprocess.run('taskkill /f /im explorer.exe', shell=True)
 
     kill_explorer()
     app = QApplication(sys.argv)
