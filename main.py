@@ -15,6 +15,7 @@ class CustomExplorer(QWidget):
         self.setWindowFlag(Qt.FramelessWindowHint)
         self.showFullScreen()  # Make window full screen
 
+
     def initUI(self):
         self.setWindowTitle('Custom Explorer')
 
@@ -77,6 +78,10 @@ class CustomExplorer(QWidget):
 
 
 if __name__ == '__main__':
+    def kill_explorer():
+        os.system('taskkill /f /im explorer.exe')
+
+    kill_explorer()
     app = QApplication(sys.argv)
     window = CustomExplorer()
     window.show()
