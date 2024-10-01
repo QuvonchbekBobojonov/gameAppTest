@@ -1,4 +1,5 @@
 import sys
+import os
 import subprocess
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QLabel, QMessageBox
@@ -23,6 +24,9 @@ class CustomExplorer(QWidget):
         open_file_explorer_button = QPushButton('Open File Explorer', self)
         open_file_explorer_button.clicked.connect(self.open_file_explorer)
 
+        open_file_chrome_button = QPushButton('Open Chrome', self)
+        open_file_chrome_button.clicked.connect(self.open_file_chrome)
+
         open_file_note_button = QPushButton('Open Notepad', self)
         open_file_note_button.clicked.connect(self.open_file_note)
 
@@ -35,6 +39,7 @@ class CustomExplorer(QWidget):
         layout.addWidget(QLabel("Welcome to Custom Explorer", self))
         layout.addWidget(open_file_explorer_button)
         layout.addWidget(open_file_note_button)
+        layout.addWidget(open_file_chrome_button)
         layout.addWidget(shutdown_button)
         layout.addWidget(restart_button)
 
@@ -47,6 +52,11 @@ class CustomExplorer(QWidget):
     def open_file_note(self):
         # Open Notepad
         subprocess.Popen('notepad')
+
+
+    def open_file_chrome(self):
+        # Open Chrome
+        subprocess.Popen(os.path.join(os.getenv('PROGRAMFILES(X86)'), 'Google/Chrome/Application/chrome.exe'))
 
     def shutdown_system(self):
         # Confirm before shutdown
