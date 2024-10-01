@@ -8,10 +8,12 @@ class CustomExplorer(QWidget):
     def __init__(self):
         super().__init__()
         self.initUI()
-        # z-index of the window -1
-        self.setWindowFlags(self.windowFlags() | 0x4000000)
-        # full screen
-        self.showFullScreen()
+        # remove window title bar
+        self.setWindowFlag(Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint)
+        # geometry of the window in display screen size
+        x = QApplication.desktop().screen().rect().center().x() - self.width() / 2
+        y = QApplication.desktop().screen().rect().center().y() - self.height() / 2
+        self.setGeometry(x, y, self.width(), self.height())
 
     def initUI(self):
         self.setWindowTitle('Custom Explorer')
