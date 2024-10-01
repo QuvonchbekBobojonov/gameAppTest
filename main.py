@@ -53,10 +53,9 @@ class CustomExplorer(QWidget):
         # Open Notepad
         subprocess.Popen('notepad')
 
-
     def open_file_chrome(self):
         # Open Chrome
-        subprocess.Popen(os.path.join(os.getenv('PROGRAMFILES(X86)'), 'Google/Chrome/Application/chrome.exe'))
+        subprocess.run(os.path.join(os.environ['PROGRAMFILES'], 'Google/Chrome/Application/chrome.exe'))
 
     def shutdown_system(self):
         # Confirm before shutdown
