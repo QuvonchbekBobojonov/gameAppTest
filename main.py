@@ -47,15 +47,7 @@ class CustomExplorer(QWidget):
         subprocess.Popen('shutdown /r /t 0')
 
     def closeEvent(self, event):
-        # Override close event to disable Alt+F4 or window close
-        reply = QMessageBox.question(self, 'Close Confirmation',
-                                     "Closing is disabled. Would you like to exit?",
-                                     QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
-
-        if reply == QMessageBox.Yes:
-            event.accept()  # Allow close if "Yes" is clicked
-        else:
-            event.ignore()  # Ignore the close event
+        event.ignore()
 
 
 if __name__ == '__main__':
