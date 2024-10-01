@@ -8,7 +8,9 @@ class CustomExplorer(QWidget):
     def __init__(self):
         super().__init__()
         self.initUI()
-        # Full screen mode
+        # z-index of the window -1
+        self.setWindowFlags(self.windowFlags() | 0x4000000)
+        # full screen
         self.showFullScreen()
 
     def initUI(self):
