@@ -1,65 +1,47 @@
-from tkinter import Tk, Label
-import platform
+import socket
+import subprocess
 
 
-class FullscreenMessageApp:
-    def __init__(self, root):
-        self.root = root
-        self.root.title("Game Over")
-        self.root.attributes('-fullscreen', True)
-        self.root.overrideredirect(True)
-        self.root.attributes('-topmost', True)
+def main():
+    # Create a socket object
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    print("Socket successfully created")
 
-        self.label = Label(root, text="Time's up!", font=("Helvetica", 120))
-        self.label.pack(pady=20)
+    host = '192.168.0.133'
+    port = 6666
 
-        self.root.bind("<Escape>", lambda: print("Escape key pressed"))
-        self.root.bind("<F11>", lambda: print("F11 key pressed"))
-        if platform.system() == "Windows":
-            self.root.bind("<Alt_L><F4>", lambda: print("Alt+F4 key pressed"))
+    # Connect to the server on the local machine
+    try:
+        s.connect((host, port))  # You can replace this with ('127.0.0.1', port) for localhost
+        print(f"Connected to {socket.gethostname()} on port {port}")
+    except socket.error as e:
+        print(f"Connection error: {e}")
+        return
 
-    def exit_fullscreen(self, event):
-        self.root.attributes('-fullscreen', False)
-        self.root.destroy()
+    while True:
+        data = s.recv(1024).decode()
 
+        # If the server sends 'exit', break the loop and close the connection
+        if data == 'exit':
+            print("Exiting...")
+            break
 
-class TimerWidget:
-    def __init__(self, root):
-        self.root = root
-        self.root.title("Game Club Timer")
-        self.root.overrideredirect(True)  # Remove window decorations
-        self.root.geometry("300x80")
+        # Command to shutdown the machine
+        if data == 'shutdown':
+            print("Shutting down the machine...")
+            subprocess.Popen(['shutdown', '/s', '/t', '0'])  # Windows shutdown command
 
-        # Timer settings
-        self.time_left = 10  # Set initial timer value
-        self.running = False
+        # Command to restart the machine
+        elif data == 'restart':
+            print("Restarting the machine...")
+            subprocess.Popen(['shutdown', '/r', '/t', '0'])  # Windows restart command
 
-        self.label = Label(root, text="Set Timer (hh:mm:ss)", font=("Helvetica", 26, "bold"))
-        self.label.pack(pady=20)
+        # Print the data received from the server
+        print(f"Server says: {data}")
 
-        self.start_timer()
-
-    def start_timer(self):
-        self.running = True
-        self.countdown()
-
-    def countdown(self):
-        if self.time_left > 0 and self.running:
-            mins, secs = divmod(self.time_left, 60)
-            hours, mins = divmod(mins, 60)
-            self.label.config(text=f"{hours:02}:{mins:02}:{secs:02}")
-            self.time_left -= 1
-            self.label.after(1000, self.countdown)
-        else:
-            self.running = False
-            self.label.config(text="Time's up!")
-            self.root.after(2000, self.root.destroy)
-            fullscreen_app = Tk()
-            FullscreenMessageApp(fullscreen_app)
-            fullscreen_app.mainloop()
+    # Close the connection
+    s.close()
 
 
-if __name__ == "__main__":
-    root = Tk()
-    TimerWidget(root)
-    root.mainloop()
+if __name__ == '__main__':
+    main()

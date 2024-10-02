@@ -4,6 +4,7 @@ import subprocess
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QLabel, QMessageBox
 from PySide6.QtGui import QGuiApplication
+import winreg as reg
 
 
 class CustomExplorer(QWidget):
@@ -14,7 +15,6 @@ class CustomExplorer(QWidget):
         # Remove window title bar (but not staying on top of all windows)
         self.setWindowFlag(Qt.FramelessWindowHint)
         self.showFullScreen()  # Make window full screen
-
 
     def initUI(self):
         self.setWindowTitle('Custom Explorer')
@@ -80,6 +80,7 @@ class CustomExplorer(QWidget):
 if __name__ == '__main__':
     def kill_explorer():
         subprocess.run('taskkill /f /im explorer.exe', shell=True)
+
 
     kill_explorer()
     app = QApplication(sys.argv)
