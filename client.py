@@ -24,33 +24,40 @@ def main():
 
         # If the server sends 'exit', break the loop and close the connection
         if data == 'exit':
+            s.send("exit".encode())
             print("Exiting...")
             break
 
         # Command to shutdown the machine
         if data == 'shutdown':
             print("Shutting down the machine...")
+            s.send("Shutting down...".encode())
             subprocess.Popen(['shutdown', '/s', '/t', '0'])
 
         # Command to restart the machine
         elif data == 'restart':
             print("Restarting the machine...")
+            s.send("Restarting...".encode())
             subprocess.Popen(['shutdown', '/r', '/t', '0'])
 
         # Command to open the file explorer
         elif data == 'explorer':
             print("Opening file explorer...")
+            s.send("Opening file explorer...".encode())
             subprocess.Popen('explorer')
 
         # Command to open Notepad
         elif data == 'notepad':
             print("Opening Notepad...")
+            s.send("Opening Notepad...".encode())
             subprocess.Popen('notepad')
 
         # Command to open Chrome
         elif data == 'chrome':
             print("Opening Chrome...")
+            s.send("Opening Chrome...".encode())
             subprocess.run(os.path.join(os.environ['PROGRAMFILES'], 'Google/Chrome/Application/chrome.exe'))
+            s.send("Chrome opened".encode())
 
         # Print the data received from the server
         print(f"Server says: {data}")
