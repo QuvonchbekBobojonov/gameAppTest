@@ -31,13 +31,6 @@ def main():
         # Exit the loop if the command is 'exit'
         if command == 'exit':
             print("Exiting...")
-            break
-
-    # Close the client connection
-    client_socket.close()
-
-    # Close the server socket
-    server_socket.close()
 
 
 if __name__ == '__main__':
