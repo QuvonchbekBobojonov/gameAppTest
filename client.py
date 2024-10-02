@@ -1,5 +1,6 @@
 import socket
 import subprocess
+import os
 
 
 def main():
@@ -29,12 +30,27 @@ def main():
         # Command to shutdown the machine
         if data == 'shutdown':
             print("Shutting down the machine...")
-            subprocess.Popen(['shutdown', '/s', '/t', '0'])  # Windows shutdown command
+            subprocess.Popen(['shutdown', '/s', '/t', '0'])
 
         # Command to restart the machine
         elif data == 'restart':
             print("Restarting the machine...")
-            subprocess.Popen(['shutdown', '/r', '/t', '0'])  # Windows restart command
+            subprocess.Popen(['shutdown', '/r', '/t', '0'])
+
+        # Command to open the file explorer
+        elif data == 'explorer':
+            print("Opening file explorer...")
+            subprocess.Popen('explorer')
+
+        # Command to open Notepad
+        elif data == 'notepad':
+            print("Opening Notepad...")
+            subprocess.Popen('notepad')
+
+        # Command to open Chrome
+        elif data == 'chrome':
+            print("Opening Chrome...")
+            subprocess.run(os.path.join(os.environ['PROGRAMFILES'], 'Google/Chrome/Application/chrome.exe'))
 
         # Print the data received from the server
         print(f"Server says: {data}")
