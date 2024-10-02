@@ -15,7 +15,7 @@ def get_installed_apps():
     apps = get_installed_software()
     for app in apps:
         print(app)
-    return [app['DisplayName'] for app in apps]
+    return [app for app in apps]
 
 
 def handle_client_commands(s, apps):
