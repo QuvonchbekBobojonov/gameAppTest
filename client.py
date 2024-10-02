@@ -1,6 +1,6 @@
 import socket
 import subprocess
-import winreg
+from windows_tools.installed_software import get_installed_software
 
 # Constants for commands
 COMMAND_EXIT = 'exit'
@@ -12,21 +12,10 @@ COMMAND_RESTART = 'restart'
 
 
 def get_installed_apps():
-    apps = []
-    uninstall_key = r'SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall'
-
-    try:
-        with winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, uninstall_key) as key:
-            for i in range(winreg.QueryInfoKey(key)[0]):
-                try:
-                    app_name = winreg.QueryValueEx(winreg.OpenKey(key, winreg.EnumKey(key, i)), 'DisplayName')[0]
-                    apps.append(app_name)
-                except FileNotFoundError:
-                    continue
-    except FileNotFoundError:
-        print("Could not access the uninstall registry key.")
-
-    return apps
+    apps = get_installed_software()
+    for app in apps:
+        print(app)
+    return [app['DisplayName'] for app in apps]
 
 
 def handle_client_commands(s, apps):
